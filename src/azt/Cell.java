@@ -35,6 +35,16 @@ public class Cell {
         this.person = person;
     }
 
+    @Override
+    public String toString() {
+        if (person != null) return "o";
+        else if (terrain.getClass().equals(Road.class)) return ".";
+        else if (terrain.getClass().equals(Wall.class)) return "W";
+        else if (terrain.getClass().equals(Bush.class)) return "B";
+        else if (terrain.getClass().equals(Glass.class)) return "G";
+        return coord.toString();
+    }
+
     public String print() {
         if (person != null) return "o";
         else if (terrain.getClass().equals(Road.class)) return ".";

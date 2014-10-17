@@ -6,7 +6,7 @@ package azt.terrain;
 public class Glass extends Terrain {
     public Glass() {
         setWalkable(false);
-        setTransparent(false);
-        setPunched(false);
+        setTransparent(true);
+        setPunched(true);
     }
 }

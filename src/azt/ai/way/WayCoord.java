@@ -3,6 +3,8 @@ package azt.ai.way;
 import azt.Coord;
 
 /**
+ * Вспомогательный класс для PathFinder. Односвязный список координат
+ *
  * @author Alexander Vlasov
  */
 public class WayCoord {

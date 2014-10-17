@@ -6,7 +6,7 @@ package azt.terrain;
 public class Wall extends Terrain {
     public Wall() {
         setWalkable(false);
-        setTransparent(true);
-        setPunched(true);
+        setTransparent(false);
+        setPunched(false);
     }
 }

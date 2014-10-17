@@ -8,7 +8,7 @@ import java.util.Random;
 public class CoordService {
     private int x, y;
     private int counter;
-    private Coord nearest;
+    private Coord nearest, nearest2;
 
     public CoordService(Coord coord) {
         x = coord.getX();
@@ -22,53 +22,109 @@ public class CoordService {
         return new Coord(random.nextInt(w), random.nextInt(h));
     }
 
+    /**
+     * Находит соседнюю координату от заданной, ближайшую по направлению к заданной
+     * @param from заданная начальная координата
+     * @param to заданная конечная координата
+     * @return соседняя координата
+     */
+    public static Coord getNearest(Coord from, Coord to) {
+        if (to.equals(from)) return null;
+        int x1 = from.getX();
+        int y1 = from.getY();
+        int x2 = to.getX();
+        int y2 = to.getY();
+        int dx = x2 - x1;
+        int dy = y2 - y1;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        dx = (int) Math.round(1.0 * dx / distance);
+        dy = (int) Math.round(1.0 * dy / distance);
+        Coord res = new Coord(x1 + dx, y1 + dy);
+        if (res.equals(from)) System.out.println("nearest = from " + from);
+        return res;
+    }
+
+    public static Coord getNearest2(Coord from, Coord to) {
+        if (to.equals(from)) return null;
+        Coord nearest = getNearest(from, to);
+        int x1 = from.getX();
+        int y1 = from.getY();
+        int x2 = to.getX();
+        int y2 = to.getY();
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        dx = (1.0 * (dx / distance));
+        dy = (1.0 * (dy / distance));
+        double dxAbs = Math.abs(dx);
+        double dyAbs = Math.abs(dy);
+        if (dxAbs >= 0.5 && dyAbs >= 0.5) {
+            if (dxAbs > dyAbs) dx = 0;
+            else if (dxAbs < dyAbs) dy = 0;
+        } else if (dxAbs >= 0.5 && dyAbs < 0.5) {
+            dy = Math.signum(dy);
+        } else if (dyAbs >= 0.5 && dxAbs < 0.5) {
+            dx = Math.signum(dx);
+        }
+
+        int dxr = (int) Math.round(dx);
+        int dyr = (int) Math.round(dy);
+
+        return new Coord(x1 + dxr, y1 + dyr);
+    }
+
     public void reset() {
         counter = 0;
 
     }
 
     public boolean hasNext() {
-        return counter != 9;
+        return counter != 10;
     }
 
+    /**
+     * Перебирает соседние координаты по принципу итератора
+     *
+     * @return
+     */
     public Coord next() {
         if (hasNext()) {
             switch (counter++) {
                 case 0:
                     return nearest;
+                case 1:
+                    return nearest2;
                 case 8:
                     return getLeftUp();
-                case 1:
+                case 9:
                     return getRightUp();
-                case 2:
+                case 6:
                     return getLeftDown();
-                case 3:
+                case 7:
                     return getRightDown();
                 case 4:
                     return getLeft();
                 case 5:
                     return getUp();
-                case 6:
+                case 2:
                     return getRight();
-                case 7:
+                case 3:
                     return getDown();
             }
         }
         return null;
     }
 
+    /**
+     * Находит соседнюю координату, ближайшую по направлению к заданной
+     *
+     * @param to заданная координата
+     */
     public void setNearest(Coord to) {
-        if (to.equals(nearest)) return;
-        int x2 = to.getX();
-        int y2 = to.getY();
+        nearest2 = getNearest2(nearest, to);
+        nearest = getNearest(nearest, to);
 
-        int dx = x2 - x;
-        int dy = y2 - y;
-        double distance = Math.sqrt(dx * dx + dy * dy);
-        dx = (int) Math.round(1.0 * dx / distance);
-        dy = (int) Math.round(1.0 * dy / distance);
-        nearest = new Coord(x + dx, y + dy);
-        return;
     }
 
     public Coord getLeftUp() {
@@ -107,4 +163,14 @@ public class CoordService {
         return new Coord(x, y);
     }
 
+    public int getCounter() {
+        return counter;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x +
+                ',' + y +
+                ") counter=" + counter;
+    }
 }

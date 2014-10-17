@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
+ * Сервис-класс работы с WayCoord
+ *
  * @author Alexander Vlasov
  */
 public class WayCoordService {
@@ -16,6 +18,14 @@ public class WayCoordService {
         return wayCoord;
     }
 
+    /**
+     * Находит в заданной половине найденного пути координату стыковки двух волн
+     *
+     * @param set      список координат найденной половины пути
+     * @param wayCoord координата стыковки двух волн
+     *
+     * @return
+     */
     public static WayCoord find(Collection<WayCoord> set, WayCoord wayCoord) {
         Coord coord = wayCoord.getCoord();
         Iterator<WayCoord> iterator = set.iterator();

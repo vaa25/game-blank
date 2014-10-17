@@ -2,7 +2,11 @@ package azt;
 
 import azt.person.Person;
 import azt.terrain.Road;
+import azt.terrain.Terrain;
 import azt.terrain.Wall;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @author Alexander Vlasov
@@ -37,6 +41,12 @@ public class Field {
         }
     }
 
+    public void fillTerrain(Collection<Coord> coords, Terrain terrain) {
+        Iterator<Coord> iterator = coords.iterator();
+        while (iterator.hasNext()) {
+            getCell(iterator.next()).setTerrain(terrain);
+        }
+    }
     public void setPerson(Person person) {
         getCell(person.getCoord()).setPerson(person);
     }
